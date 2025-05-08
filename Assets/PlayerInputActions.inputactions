@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "Minigame",
+            "id": "057827a2-2ffa-49c3-90cb-53344c51b76b",
+            "actions": [
+                {
+                    "name": "Harvest",
+                    "type": "Button",
+                    "id": "ea50c6c6-10fc-46d2-b60a-c672ef9e3aa3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c75786ac-15b2-4c77-9474-8c4d6e6fb688",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Harvest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

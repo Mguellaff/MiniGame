@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67a06067adda94040bcea39c55be90da, type: 3}
+  m_Name: Well
+  m_EditorClassIdentifier: 
+  image: {fileID: 21300000, guid: f27017e4aab7efb4e9ed279ba4cbf289, type: 3}
+  price: 20
+  prefab: {fileID: 2620371351645040211, guid: d34660cf171ca6549a7e93ffcf80dbea, type: 3}
