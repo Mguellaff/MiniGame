@@ -15,3 +15,11 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: e23b34c230dcc444db462925138b57c7, type: 3}
   price: 40
   prefab: {fileID: 800064087179326418, guid: c6a12ab18ede0934fa705e38476caab8, type: 3}
+  ProductionAmount: 0
+  ProductionTime: 0
+  ProductionCost: 0
+  BaseItem: 0
+  ProducedItem: 0
+  mesh: {fileID: 8777139954052135742, guid: 7e4426a332818e84088ba0302d80c0c8, type: 3}
+  texture: {fileID: 2800000, guid: ff70834936a8a8240a8baeccf652e1f2, type: 3}
+  unitType: 1
