@@ -13,16 +13,8 @@ public class UnitProduction : MonoBehaviour
 {
     private UnitType unitType;
     private Producer producer;
-    public string GetUnitType()
-    {
-        return unitType.ToString();
-    }
-
-    public void SetProducer(Producer producer)
-    {
-        this.producer = producer;
-    }
-
+    private InventoryManager inventoryManager;
+    
     private void Start()
     {
         if (producer == null)
@@ -34,6 +26,40 @@ public class UnitProduction : MonoBehaviour
         unitType = producer.unitType;
         StartCoroutine(Produce());
     }
+    private void ProduceUnit()
+    {
+        if (producer == null)
+        {
+            Debug.LogError("Le Producer est null !");
+            return;
+        }
+
+        if (inventoryManager == null)
+        {
+            inventoryManager = FindObjectOfType<InventoryManager>();
+            if (inventoryManager == null)
+            {
+                Debug.LogError("Aucun InventoryManager trouvé dans la scène !");
+                return;
+            }
+        }
+
+        if (inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost))
+        {
+            inventoryManager.AddResource(producer.ProducedItem, producer.ProductionAmount);
+        }
+    }
+    public string GetUnitType()
+    {
+        return unitType.ToString();
+    }
+
+    public void SetProducer(Producer producer)
+    {
+        this.producer = producer;
+    }
+
+    
 
     private IEnumerator Produce()
     {
