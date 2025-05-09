@@ -9,7 +9,7 @@ public class ResourceManager
     public ResourceManager(ResourceType type)
     {
         resourceType = type;
-        resourceData = new ResourceData(type);
+        resourceData = new ResourceData();
     }
 
     // Méthode pour obtenir le ResourceType

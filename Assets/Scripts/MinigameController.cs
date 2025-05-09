@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class MinigameController : MonoBehaviour, PlayerInputActions.IMinigameActions
 {
     private PlayerInputActions inputActions;
-
+    private UnitProduction unit;
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -28,12 +28,8 @@ public class MinigameController : MonoBehaviour, PlayerInputActions.IMinigameAct
             Ray ray = Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                var unit = hit.collider.GetComponent<UnitProduction>();
-                if (unit != null && unit.GetIsReadyToHarvest())
-                {
-                    Debug.Log("Harvesting unit: " + unit.name);
-                    unit.Harvest();
-                }
+                unit = hit.collider.GetComponent<UnitProduction>();
+                unit?.Harvest();
             }
         }
     }

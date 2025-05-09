@@ -1,12 +1,14 @@
 using System;
 
-[System.Serializable]
 public class ResourceData
 {
-    public int currentAmount;
-    public int totalAmount;
+    private int currentAmount;
+    private int totalAmount;
 
-    public ResourceData(ResourceType type)
+    // Événement déclenché lorsque currentAmount change
+    public event Action<int> OnAmountChanged;
+
+    public ResourceData()
     {
         currentAmount = 0;
         totalAmount = 0;
@@ -16,6 +18,7 @@ public class ResourceData
     {
         currentAmount += amount;
         totalAmount += amount;
+        OnAmountChanged?.Invoke(currentAmount);
     }
 
     public bool Spend(int amount)
@@ -23,8 +26,16 @@ public class ResourceData
         if (currentAmount >= amount)
         {
             currentAmount -= amount;
+
+            OnAmountChanged?.Invoke(currentAmount);
+
             return true;
         }
         return false;
+    }
+
+    public int GetCurrentAmount()
+    {
+        return currentAmount;
     }
 }
