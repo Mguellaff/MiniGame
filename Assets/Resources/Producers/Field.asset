@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a06067adda94040bcea39c55be90da, type: 3}
   m_Name: Field
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: e23b34c230dcc444db462925138b57c7, type: 3}
+  image: {fileID: 21300000, guid: ae893596723b6f64480bd0ad6fec9e22, type: 3}
   price: 40
-  prefab: {fileID: 800064087179326418, guid: c6a12ab18ede0934fa705e38476caab8, type: 3}
-  ProductionAmount: 0
-  ProductionTime: 0
-  ProductionCost: 0
-  BaseItem: 0
-  ProducedItem: 0
-  mesh: {fileID: 8777139954052135742, guid: 7e4426a332818e84088ba0302d80c0c8, type: 3}
-  texture: {fileID: 2800000, guid: ff70834936a8a8240a8baeccf652e1f2, type: 3}
-  unitType: 1
+  prefab: {fileID: 3753649279583834754, guid: 48fa80f91d7968147b3f82b1089f8053, type: 3}
+  ProductionAmount: 250
+  ProductionTime: 10
+  ProductionCost: 2500
+  BaseItem: {fileID: 11400000, guid: eae0732da14b5184a9fd49265183bb67, type: 2}
+  ProducedItem: {fileID: 11400000, guid: 4cb684ecf5b995445b9138b2e963ce76, type: 2}
+  mesh: {fileID: 4300000, guid: 898d3e0b9cfc97c489858243aedde428, type: 2}
+  material: {fileID: 2100000, guid: 16783362225109946ab383d2a69390e8, type: 2}

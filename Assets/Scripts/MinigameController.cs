@@ -29,9 +29,10 @@ public class MinigameController : MonoBehaviour, PlayerInputActions.IMinigameAct
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 var unit = hit.collider.GetComponent<UnitProduction>();
-                if (unit != null)
+                if (unit != null && unit.GetIsReadyToHarvest())
                 {
                     Debug.Log("Harvesting unit: " + unit.name);
+                    unit.Harvest();
                 }
             }
         }

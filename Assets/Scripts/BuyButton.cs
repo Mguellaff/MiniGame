@@ -5,10 +5,13 @@ using TMPro;
 public class BuyButton : MonoBehaviour
 {
     private Button button;
-    [SerializeField] private Producer producer;
+    private Producer producer;
     private FlexalonGridLayout gridLayout;
     private Image[] childImages;
     private int maxGridChildren;
+    private TextMeshProUGUI textComponent;
+    private UnitProduction unitProduction;
+    private GameObject prefabInstance;
     void Awake()
     {
         childImages = new Image[0];
@@ -41,13 +44,27 @@ public class BuyButton : MonoBehaviour
         if (gridLayout.transform.childCount >= GetMaxGridChildren())
         {
             Debug.Log("Le nombre maximum d'enfants est atteint. Impossible d'en ajouter un autre.");
-            return; 
+            return;
         }
 
         Debug.Log("Le nombre d'enfants est dans la limite autorisée.");
-        GameObject prefabInstance = Instantiate(producer.prefab, Vector3.zero, Quaternion.identity);
+
+        prefabInstance = Instantiate(producer.prefab, Vector3.zero, Quaternion.identity);
+
+        unitProduction = prefabInstance.GetComponent<UnitProduction>();
+        if (unitProduction != null)
+        {
+            unitProduction.SetProducer(producer);
+        }
+        else
+        {
+            Debug.LogError("Le composant UnitProduction est introuvable sur l'instance du prefab !");
+        }
+
+        // Définir le parent de l'instance
         prefabInstance.transform.SetParent(gridLayout.transform, false);
     }
+
 
 
 
@@ -83,7 +100,7 @@ public class BuyButton : MonoBehaviour
             Debug.LogError("L'image enfant à l'index 1 est introuvable ou inexistante !");
         }
 
-        var textComponent = button.GetComponentInChildren<TextMeshProUGUI>();
+        textComponent = button.GetComponentInChildren<TextMeshProUGUI>();
         if (textComponent != null)
         {
             textComponent.text = producer.price.ToString();

@@ -1,79 +1,67 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public List<ResourceData> resources = new List<ResourceData>();
-
-    // Événements pour notifier les abonnés lors du changement des ressources
-    public event Action<ResourceType, int> OnResourceChanged;
+    private Dictionary<ResourceType, ResourceData> resourceDictionary = new Dictionary<ResourceType, ResourceData>();
 
     private void Start()
     {
-        // Par exemple, on peut initialiser le gestionnaire avec des types de ressources
         InitializeResources();
     }
-
     private void InitializeResources()
     {
         ResourceType[] resourceTypes = Resources.LoadAll<ResourceType>("ResourceTypes");
 
         foreach (ResourceType type in resourceTypes)
         {
-            resources.Add(new ResourceData(type));
+            // Associe chaque ResourceType à un nouveau ResourceData
+            resourceDictionary[type] = new ResourceData(type);
         }
 
-        Debug.Log($"Initialized {resources.Count} resources from ResourceTypes folder.");
+        Debug.Log($"Initialized {resourceDictionary.Count} resources.");
     }
-
 
     public void AddResource(ResourceType resourceType, int amount)
     {
-        ResourceData resource = resources.Find(r => r.resourceType == resourceType);
-        if (resource != null)
+        // Vérifie si le ResourceType existe dans le dictionnaire
+        if (resourceDictionary.TryGetValue(resourceType, out ResourceData resourceData))
         {
-            resource.Add(amount);
-            // Lorsque la ressource est modifiée, on déclenche l'événement
-            OnResourceChanged?.Invoke(resourceType, resource.currentAmount);
+            resourceType.textToChange.text = resourceData.totalAmount.ToString();
+            resourceData.Add(amount);
+        }
+        else
+        {
+            Debug.LogWarning($"ResourceType {resourceType.name} not found in resourceDictionary.");
         }
     }
 
     public bool SpendResource(ResourceType resourceType, int amount)
     {
-        ResourceData resource = resources.Find(r => r.resourceType == resourceType);
-        if (resource != null)
+        // Vérifie si le ResourceType existe dans le dictionnaire
+        if (resourceDictionary.TryGetValue(resourceType, out ResourceData resourceData))
         {
-            bool success = resource.Spend(amount);
-            if (success)
-            {
-                // Lorsque la ressource est modifiée, on déclenche l'événement
-                OnResourceChanged?.Invoke(resourceType, resource.currentAmount);
-            }
-            return success;
+            resourceType.textToChange.text = resourceData.totalAmount.ToString();
+            return resourceData.Spend(amount);
         }
-        return false;
+        else
+        {
+            Debug.LogWarning($"ResourceType {resourceType.name} not found in resourceDictionary.");
+            return false;
+        }
     }
 
     public int GetResourceAmount(ResourceType resourceType)
     {
-        ResourceData resource = resources.Find(r => r.resourceType == resourceType);
-        if (resource != null)
+        // Vérifie si le ResourceType existe dans le dictionnaire
+        if (resourceDictionary.TryGetValue(resourceType, out ResourceData resourceData))
         {
-            return resource.currentAmount;
+            return resourceData.currentAmount;
         }
-        return 0;
-    }
-
-    // Méthode pour s'abonner aux changements de ressource
-    public void Subscribe(ResourceType resourceType, Action<int> callback)
-    {
-        OnResourceChanged += (type, amount) =>
+        else
         {
-            if (type == resourceType)
-            {
-                callback(amount);
-            }
-        };
+            Debug.LogWarning($"ResourceType {resourceType.name} not found in resourceDictionary.");
+            return 0;
+        }
     }
 }

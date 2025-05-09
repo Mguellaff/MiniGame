@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using TMPro;
 public class CityDemands : MonoBehaviour
 {
     private int shirtDemand = 1;
@@ -13,16 +13,41 @@ public class CityDemands : MonoBehaviour
     [SerializeField] private float timeLimit;
     [SerializeField] private Image timeImage;
     [SerializeField] private GameObject endCanvas;
+    [SerializeField] private int demandLimit = 5;
+    [SerializeField] private TextMeshProUGUI shirtDemandText;
+
+    public event Action<int> OnShirtDemandChanged;
+
+    private float ProductionTime
+    {
+        get => productionTime;
+        set => productionTime = Mathf.Max(1f, value);
+    }
+
+    // Propriété pour encapsuler shirtDemand
+    private int ShirtDemand
+    {
+        get => shirtDemand;
+        set
+        {
+            shirtDemand = value;
+            OnShirtDemandChanged?.Invoke(shirtDemand); // Déclenche l'événement
+        }
+    }
 
     void Start()
     {
         StartCoroutine(GenerateDemand());
         timeImage.fillAmount = 0f;
+
+        // Abonnez-vous à l'événement pour mettre à jour l'UI
+        OnShirtDemandChanged += UpdateShirtDemandUI;
+        UpdateShirtDemandUI(shirtDemand); // Initialisez l'UI avec la valeur actuelle
     }
 
     void Update()
     {
-        if (shirtDemand > 0)
+        if (shirtDemand > demandLimit)
         {
             demandTimer += Time.deltaTime;
             timeImage.fillAmount = Mathf.Clamp01(demandTimer / timeLimit);
@@ -50,9 +75,18 @@ public class CityDemands : MonoBehaviour
         while (isGenerating)
         {
             yield return new WaitForSeconds(productionTime);
-            shirtDemand++;
-            productionTime--;
+            ShirtDemand++; // Utilisez la propriété pour déclencher l'événement
+            ProductionTime--;
             Debug.Log("Increased shirt demand: " + shirtDemand);
+        }
+    }
+
+    // Méthode pour mettre à jour l'UI
+    private void UpdateShirtDemandUI(int newDemand)
+    {
+        if (shirtDemandText != null)
+        {
+            shirtDemandText.text = $"Shirt Demand: {newDemand}";
         }
     }
 }

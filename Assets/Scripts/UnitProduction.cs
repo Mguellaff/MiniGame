@@ -2,38 +2,17 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum UnitType
-    {
-        Well,
-        Field,
-        Factory
-    }
 
 public class UnitProduction : MonoBehaviour
 {
-    private UnitType unitType;
     private Producer producer;
     private InventoryManager inventoryManager;
-    
-    private void Start()
-    {
-        if (producer == null)
-        {
-            Debug.LogError("Le Producer est null !");
-            return;
-        }
+    private bool isReadyToHarvest = false;  
+    private MeshRenderer meshRenderer;
+    private MeshFilter meshFilter;
 
-        unitType = producer.unitType;
-        StartCoroutine(Produce());
-    }
     private void ProduceUnit()
     {
-        if (producer == null)
-        {
-            Debug.LogError("Le Producer est null !");
-            return;
-        }
-
         if (inventoryManager == null)
         {
             inventoryManager = FindObjectOfType<InventoryManager>();
@@ -44,29 +23,49 @@ public class UnitProduction : MonoBehaviour
             }
         }
 
-        if (inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost))
+        if (producer.BaseItem!=null&&inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost))
         {
             inventoryManager.AddResource(producer.ProducedItem, producer.ProductionAmount);
         }
     }
-    public string GetUnitType()
+    public void Harvest()
     {
-        return unitType.ToString();
+        if (producer.BaseItem != null && inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost))
+        {
+            inventoryManager.AddResource(producer.ProducedItem, producer.ProductionAmount);
+            isReadyToHarvest = false;
+        }
     }
-
     public void SetProducer(Producer producer)
     {
         this.producer = producer;
+
+        meshRenderer = GetComponent<MeshRenderer>();
+        meshFilter = GetComponent<MeshFilter>();
+        meshFilter.mesh = null;
+        meshFilter.mesh = producer.mesh;
+        meshRenderer.material = producer.material;
+
+        if (producer.BaseItem == null)
+        {
+            Debug.Log("Le BaseItem du Producer est null !");
+            //StartCoroutine(Produce());
+        }
     }
 
     
 
     private IEnumerator Produce()
     {
-        while (true)
+        while (!isReadyToHarvest)
         {
             yield return new WaitForSeconds(producer.ProductionTime);
-            ProduceUnit();
+            isReadyToHarvest = true;
         }
+    }
+
+    public bool GetIsReadyToHarvest()
+    {
+        return isReadyToHarvest;
     }
 }

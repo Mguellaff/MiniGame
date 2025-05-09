@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1454844440566010208}
-  - component: {fileID: 746501881988162186}
   - component: {fileID: 4439265667164409560}
   - component: {fileID: 5189986356246046319}
   - component: {fileID: 563729991515935132}
   - component: {fileID: 4123315988170733405}
   - component: {fileID: 1365253810773372584}
+  - component: {fileID: 5355804570736179972}
   m_Layer: 0
   m_Name: ProductionUnit
   m_TagString: Untagged
@@ -38,14 +38,6 @@ Transform:
   - {fileID: 1647220302998944662}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &746501881988162186
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3753649279583834754}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &4439265667164409560
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 16783362225109946ab383d2a69390e8, type: 2}
+  - {fileID: 2100000, guid: a8deb68f99795764a91d90e9479eb0c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -157,7 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e91c3b28eed2e6f41ac242e372aafdae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitType: 1
 --- !u!95 &1365253810773372584
 Animator:
   serializedVersion: 5
@@ -179,6 +170,14 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!33 &5355804570736179972
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3753649279583834754}
+  m_Mesh: {fileID: 0}
 --- !u!1001 &3991804249776041369
 PrefabInstance:
   m_ObjectHideFlags: 0
