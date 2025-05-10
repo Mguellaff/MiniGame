@@ -5,10 +5,11 @@ using UnityEngine.UI;
 using TMPro;
 public class CityDemands : MonoBehaviour
 {
-    private int shirtDemand = 1;
+    private int shirtDemand;
     private float demandTimer = 0f;
     private bool isGenerating = true;
 
+    [SerializeField] private int baseDemand = 1;
     [SerializeField] private float productionTime;
     [SerializeField] private float timeLimit;
     [SerializeField] private Image timeImage;
@@ -20,6 +21,9 @@ public class CityDemands : MonoBehaviour
 
     private InventoryManager inventoryManager;
     public event Action<int> OnShirtDemandChanged;
+
+    [SerializeField] private AudioClip cashSound;
+    private AudioSource audioSource;
 
     private float ProductionTime
     {
@@ -40,8 +44,10 @@ public class CityDemands : MonoBehaviour
 
     void Start()
     {
+        audioSource = FindFirstObjectByType<AudioSource>();
         StartCoroutine(GenerateDemand());
         timeImage.fillAmount = 0f;
+        ShirtDemand = baseDemand;
         inventoryManager = InventoryManager.Instance;
         // Abonnez-vous à l'événement pour mettre à jour l'UI
         OnShirtDemandChanged += UpdateShirtDemandUI;
@@ -59,7 +65,6 @@ public class CityDemands : MonoBehaviour
             {
                 Debug.Log("Demand not met in time. Reloading scene...");
                 isGenerating = false;
-                //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 endCanvas.SetActive(true);
             }
         }
@@ -103,6 +108,7 @@ public class CityDemands : MonoBehaviour
             ShirtDemand--;
             inventoryManager.SpendResource(baseItemName, 1);
             UpdateShirtDemandUI(ShirtDemand);
+            audioSource.PlayOneShot(cashSound);
             inventoryManager.AddResource(producedItemName, 50);
         }
         else

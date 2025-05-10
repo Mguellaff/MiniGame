@@ -38,4 +38,9 @@ public class ResourceData
     {
         return currentAmount;
     }
+
+    public int GetTotalAmount()
+    {
+        return totalAmount;
+    }
 }

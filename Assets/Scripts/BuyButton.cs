@@ -13,6 +13,8 @@ public class BuyButton : MonoBehaviour
     private UnitProduction unitProduction;
     private GameObject prefabInstance;
     private InventoryManager inventoryManager;
+    [SerializeField] private AudioClip spawnSound;
+    private AudioSource audioSource;
     void Awake()
     {
         childImages = new Image[0];
@@ -31,6 +33,7 @@ public class BuyButton : MonoBehaviour
             Debug.LogError("Aucun FlexalonGridLayout trouvé dans la scène !");
         }
         inventoryManager = InventoryManager.Instance;
+        audioSource = FindFirstObjectByType<AudioSource>();
     }
 
 
@@ -54,6 +57,7 @@ public class BuyButton : MonoBehaviour
 
         if (inventoryManager.SpendResource("Money", producer.price))
         {
+            audioSource.PlayOneShot(spawnSound);
             prefabInstance = Instantiate(producer.prefab, Vector3.zero, Quaternion.identity);
             unitProduction = prefabInstance.GetComponent<UnitProduction>();
             if (unitProduction != null)

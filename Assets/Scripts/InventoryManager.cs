@@ -7,7 +7,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
 
     private Dictionary<ResourceType, ResourceData> resourceDictionary = new Dictionary<ResourceType, ResourceData>();
-
+    private Dictionary<string, int> resourceTotalAmountsDictionary = new Dictionary<string, int>();
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -210,4 +210,38 @@ public class InventoryManager : MonoBehaviour
         return resourceDictionary.TryGetValue(resourceType, out resourceData);
     }
 
+    private void UpdateTotalAmounts()
+    {
+        resourceTotalAmountsDictionary.Clear();
+
+        foreach (var entry in resourceDictionary)
+        {
+            ResourceType resourceType = entry.Key;
+            ResourceData resourceData = entry.Value;
+
+            if (resourceType != null && resourceData != null)
+            {
+                resourceTotalAmountsDictionary[resourceType.resourceName] = resourceData.GetTotalAmount();
+            }
+            else
+            {
+                Debug.LogWarning("Un ResourceType ou ResourceData est null lors de la mise à jour des totaux.");
+            }
+        }
+
+        Debug.Log("Les totaux des ressources ont été mis à jour.");
+    }
+
+    public Dictionary<string, int> GetResourceTotalAmounts()
+    {
+        UpdateTotalAmounts();
+        return resourceTotalAmountsDictionary;
+    }
+    public void ClearInventory()
+    {
+        resourceDictionary.Clear();
+        resourceTotalAmountsDictionary.Clear();
+        InitializeResources();
+        Debug.Log("Inventaire réinitialisé.");
+    }
 }
