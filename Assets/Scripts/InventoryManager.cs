@@ -36,6 +36,8 @@ public class InventoryManager : MonoBehaviour
             resourceDictionary[type] = new ResourceData();
             type.resourceData = resourceDictionary[type];
 
+            Debug.Log($"ResourceType chargé : {type.resourceName}");
+
             if (type.textToChange == null)
             {
                 Debug.LogWarning($"textToChange n'est pas assigné pour le ResourceType {type.name}. Assurez-vous de l'assigner dans l'inspecteur.");
@@ -46,12 +48,36 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public void AddResource(ResourceType resourceType, int amount)
+    public void AddResource(object resourceIdentifier, int amount)
     {
-        // Vérifie si le ResourceType existe dans le dictionnaire
+        ResourceType resourceType = null;
+
+        // Vérifie si l'identifiant est un ResourceType
+        if (resourceIdentifier is ResourceType type)
+        {
+            resourceType = type;
+        }
+        // Vérifie si l'identifiant est un string
+        else if (resourceIdentifier is string resourceName)
+        {
+            Debug.Log($"Recherche du ResourceType avec le nom : {resourceName}");
+            resourceType = FindResourceTypeByName(resourceName);
+            if (resourceType == null)
+            {
+                Debug.LogWarning($"Aucun ResourceType trouvé avec le nom {resourceName}.");
+                return;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("L'identifiant fourni n'est ni un ResourceType ni un string.");
+            return;
+        }
+
+        // Ajoute la ressource au dictionnaire
         if (resourceDictionary.TryGetValue(resourceType, out ResourceData resourceData))
         {
-            resourceData.Add(amount); 
+            resourceData.Add(amount);
             if (resourceType.textToChange != null)
             {
                 resourceType.textToChange.text = resourceData.GetCurrentAmount().ToString();
@@ -60,20 +86,44 @@ public class InventoryManager : MonoBehaviour
             {
                 Debug.LogWarning($"textToChange n'est pas assigné pour le ResourceType {resourceType.name}.");
             }
-
         }
         else
         {
-            Debug.LogWarning($"ResourceType {resourceType.name} not found in resourceDictionary.");
+            Debug.LogWarning($"ResourceType {resourceType.name} non trouvé dans le dictionnaire.");
         }
     }
 
-    public bool SpendResource(ResourceType resourceType, int amount)
+
+    public bool SpendResource(object resourceIdentifier, int amount)
     {
+        ResourceType resourceType = null;
+
+        // Vérifie si l'identifiant est un ResourceType
+        if (resourceIdentifier is ResourceType type)
+        {
+            resourceType = type;
+        }
+        // Vérifie si l'identifiant est un string
+        else if (resourceIdentifier is string resourceName)
+        {
+            Debug.Log($"Recherche du ResourceType avec le nom : {resourceName}");
+            resourceType = FindResourceTypeByName(resourceName);
+            if (resourceType == null)
+            {
+                Debug.LogWarning($"Aucun ResourceType trouvé avec le nom {resourceName}.");
+                return false;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("L'identifiant fourni n'est ni un ResourceType ni un string.");
+            return false;
+        }
+
         // Vérifie si le ResourceType existe dans le dictionnaire
         if (resourceDictionary.TryGetValue(resourceType, out ResourceData resourceData))
         {
-            resourceData.Spend(amount); 
+            resourceData.Spend(amount);
             if (resourceType.textToChange != null)
             {
                 resourceType.textToChange.text = resourceData.GetCurrentAmount().ToString();
@@ -91,19 +141,59 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public int GetResourceAmount(ResourceType resourceType)
+
+    public int GetResourceAmount(object resourceIdentifier)
     {
-        // Vérifie si le ResourceType existe dans le dictionnaire
+        ResourceType resourceType = null;
+
+        if (resourceIdentifier is ResourceType type)
+        {
+            resourceType = type;
+        }
+        else if (resourceIdentifier is string resourceName)
+        {
+            Debug.Log($"Recherche du ResourceType avec le nom : {resourceName}");
+            resourceType = FindResourceTypeByName(resourceName);
+            if (resourceType == null)
+            {
+                Debug.LogWarning($"Aucun ResourceType trouvé avec le nom {resourceName}.");
+                return 0;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("L'identifiant fourni n'est ni un ResourceType ni un string.");
+            return 0;
+        }
+
         if (resourceDictionary.TryGetValue(resourceType, out ResourceData resourceData))
         {
+            Debug.Log($"ResourceType {resourceType.name} trouvé avec {resourceData.GetCurrentAmount()} unités.");
             return resourceData.GetCurrentAmount();
         }
         else
         {
-            Debug.LogWarning($"ResourceType {resourceType.name} not found in resourceDictionary.");
+            Debug.LogWarning($"ResourceType {resourceType.name} non trouvé dans le dictionnaire.");
             return 0;
         }
     }
+
+
+
+    private ResourceType FindResourceTypeByName(string resourceName)
+    {
+        foreach (var key in resourceDictionary.Keys)
+        {
+            Debug.Log($"Recherche : {key.resourceName}");
+            if (key.resourceName == resourceName)
+            {
+                return key;
+            }
+        }
+        return null;
+    }
+
+
 
     public bool TryGetResourceData(ResourceType resourceType, out ResourceData resourceData)
     {

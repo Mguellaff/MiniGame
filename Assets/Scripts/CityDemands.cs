@@ -15,7 +15,10 @@ public class CityDemands : MonoBehaviour
     [SerializeField] private GameObject endCanvas;
     [SerializeField] private int demandLimit = 5;
     [SerializeField] private TextMeshProUGUI shirtDemandText;
+    [SerializeField] private string baseItemName = "Shirt";
+    [SerializeField] private string producedItemName = "Money";
 
+    private InventoryManager inventoryManager;
     public event Action<int> OnShirtDemandChanged;
 
     private float ProductionTime
@@ -39,7 +42,7 @@ public class CityDemands : MonoBehaviour
     {
         StartCoroutine(GenerateDemand());
         timeImage.fillAmount = 0f;
-
+        inventoryManager = InventoryManager.Instance;
         // Abonnez-vous à l'événement pour mettre à jour l'UI
         OnShirtDemandChanged += UpdateShirtDemandUI;
         UpdateShirtDemandUI(shirtDemand); // Initialisez l'UI avec la valeur actuelle
@@ -89,4 +92,25 @@ public class CityDemands : MonoBehaviour
             shirtDemandText.text = $"Shirt Demand: {newDemand}";
         }
     }
+
+    public void Harvest()
+    {
+        int currentShirtAmount = inventoryManager.GetResourceAmount(baseItemName);
+        Debug.Log($"Avant récolte : {ShirtDemand} demand left, {currentShirtAmount} shirts left.");
+
+        if (ShirtDemand > 0 && currentShirtAmount > 0)
+        {
+            ShirtDemand--;
+            inventoryManager.SpendResource(baseItemName, 1);
+            UpdateShirtDemandUI(ShirtDemand);
+            inventoryManager.AddResource(producedItemName, 50);
+        }
+        else
+        {
+            Debug.Log("No shirt demand to harvest.");
+        }
+
+        Debug.Log($"Après récolte : {ShirtDemand} demand left, {inventoryManager.GetResourceAmount(baseItemName)} shirts left.");
+    }
+
 }

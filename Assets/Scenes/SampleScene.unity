@@ -682,7 +682,6 @@ GameObject:
   - component: {fileID: 573670205}
   - component: {fileID: 573670208}
   - component: {fileID: 573670207}
-  - component: {fileID: 573670206}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -711,23 +710,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.65, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &573670206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573670204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &573670207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2752,8 +2734,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0124886, y: 1.759918, z: 1.0153174}
-  m_Center: {x: -0.2564298, y: -0.11431563, z: -0.26}
+  m_Size: {x: 0.6118922, y: 2.053, z: 1.0153174}
+  m_Center: {x: -0.0561316, y: 0.03222537, z: -0.26}
 --- !u!114 &1897274633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2772,6 +2754,8 @@ MonoBehaviour:
   endCanvas: {fileID: 100059382}
   demandLimit: 5
   shirtDemandText: {fileID: 1459519387}
+  baseItemName: Shirt
+  producedItemName: Money
 --- !u!33 &1897274634
 MeshFilter:
   m_ObjectHideFlags: 0

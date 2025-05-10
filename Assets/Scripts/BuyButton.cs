@@ -12,6 +12,7 @@ public class BuyButton : MonoBehaviour
     private TextMeshProUGUI textComponent;
     private UnitProduction unitProduction;
     private GameObject prefabInstance;
+    private InventoryManager inventoryManager;
     void Awake()
     {
         childImages = new Image[0];
@@ -29,6 +30,7 @@ public class BuyButton : MonoBehaviour
         {
             Debug.LogError("Aucun FlexalonGridLayout trouvé dans la scène !");
         }
+        inventoryManager = InventoryManager.Instance;
     }
 
 

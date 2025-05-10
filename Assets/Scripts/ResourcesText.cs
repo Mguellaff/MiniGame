@@ -27,25 +27,26 @@ public class ResourcesText : MonoBehaviour
             }
 
             // Configurer le texte
-            hudText = hudInstance.GetComponentInChildren<TextMeshProUGUI>();
-            if (hudText != null) resourceType.textToChange = hudText;
+            TextMeshProUGUI localHudText = hudInstance.GetComponentInChildren<TextMeshProUGUI>();
+            if (localHudText != null) resourceType.textToChange = localHudText;
             else Debug.LogError("hudtext est null");
 
-            if (hudText != null)
+            if (localHudText != null)
             {
-                hudText.text = "0";
-                resourceTexts[resourceType] = hudText;
+                localHudText.text = "0";
+                resourceTexts[resourceType] = localHudText;
 
                 // Abonner le texte à l'événement OnAmountChanged
                 if (InventoryManager.Instance.TryGetResourceData(resourceType, out ResourceData resourceData))
                 {
                     resourceData.OnAmountChanged += (newAmount) =>
                     {
-                        hudText.text = newAmount.ToString();
+                        localHudText.text = newAmount.ToString();
                     };
                 }
             }
         }
+
     }
 
 

@@ -5,6 +5,7 @@ public class MinigameController : MonoBehaviour, PlayerInputActions.IMinigameAct
 {
     private PlayerInputActions inputActions;
     private UnitProduction unit;
+    private CityDemands cityDemands;
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -30,6 +31,8 @@ public class MinigameController : MonoBehaviour, PlayerInputActions.IMinigameAct
             {
                 unit = hit.collider.GetComponent<UnitProduction>();
                 unit?.Harvest();
+                cityDemands = hit.collider.GetComponent<CityDemands>();
+                cityDemands?.Harvest();
             }
         }
     }
