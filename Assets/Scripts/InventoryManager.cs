@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
 
         foreach (ResourceType type in resourceTypes)
         {
-            resourceDictionary[type] = new ResourceData();
+            resourceDictionary[type] = new ResourceData(type.baseAmount);
             type.resourceData = resourceDictionary[type];
 
             Debug.Log($"ResourceType chargé : {type.resourceName}");
@@ -123,23 +123,33 @@ public class InventoryManager : MonoBehaviour
         // Vérifie si le ResourceType existe dans le dictionnaire
         if (resourceDictionary.TryGetValue(resourceType, out ResourceData resourceData))
         {
-            resourceData.Spend(amount);
-            if (resourceType.textToChange != null)
+            // Tente de dépenser la ressource
+            if (resourceData.Spend(amount))
             {
-                resourceType.textToChange.text = resourceData.GetCurrentAmount().ToString();
+                // Mise à jour de l'affichage si la dépense a réussi
+                if (resourceType.textToChange != null)
+                {
+                    resourceType.textToChange.text = resourceData.GetCurrentAmount().ToString();
+                }
+                else
+                {
+                    Debug.LogWarning($"textToChange n'est pas assigné pour le ResourceType {resourceType.name}.");
+                }
+                return true; // Dépense réussie
             }
             else
             {
-                Debug.LogWarning($"textToChange n'est pas assigné pour le ResourceType {resourceType.name}.");
+                Debug.LogWarning($"Pas assez de ressources pour dépenser {amount} unités de {resourceType.name}.");
+                return false; // Dépense échouée
             }
-            return true;
         }
         else
         {
-            Debug.LogWarning($"ResourceType {resourceType.name} not found in resourceDictionary.");
+            Debug.LogWarning($"ResourceType {resourceType.name} non trouvé dans le dictionnaire.");
             return false;
         }
     }
+
 
 
     public int GetResourceAmount(object resourceIdentifier)

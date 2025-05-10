@@ -33,7 +33,8 @@ public class ResourcesText : MonoBehaviour
 
             if (localHudText != null)
             {
-                localHudText.text = "0";
+                // Initialiser le texte avec la valeur baseAmount
+                localHudText.text = resourceType.baseAmount.ToString();
                 resourceTexts[resourceType] = localHudText;
 
                 // Abonner le texte à l'événement OnAmountChanged
@@ -46,9 +47,7 @@ public class ResourcesText : MonoBehaviour
                 }
             }
         }
-
     }
-
 
     // Méthode pour mettre à jour les valeurs des ressources
     public void UpdateResourceText(ResourceType resourceType, int amount)

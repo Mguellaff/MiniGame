@@ -8,9 +8,9 @@ public class ResourceData
     // Événement déclenché lorsque currentAmount change
     public event Action<int> OnAmountChanged;
 
-    public ResourceData()
+    public ResourceData(int baseAmount)
     {
-        currentAmount = 0;
+        currentAmount = baseAmount;
         totalAmount = 0;
     }
 

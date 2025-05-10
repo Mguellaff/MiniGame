@@ -8,4 +8,5 @@ public class ResourceType : ScriptableObject
     public Sprite icon;
     public TextMeshProUGUI textToChange;
     public ResourceData resourceData;
+    public int baseAmount;
 }

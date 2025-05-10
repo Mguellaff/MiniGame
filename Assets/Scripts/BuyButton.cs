@@ -51,19 +51,21 @@ public class BuyButton : MonoBehaviour
 
         Debug.Log("Le nombre d'enfants est dans la limite autorisée.");
 
-        prefabInstance = Instantiate(producer.prefab, Vector3.zero, Quaternion.identity);
 
-        unitProduction = prefabInstance.GetComponent<UnitProduction>();
-        if (unitProduction != null)
+        if (inventoryManager.SpendResource("Money", producer.price))
         {
-            unitProduction.SetProducer(producer);
+            prefabInstance = Instantiate(producer.prefab, Vector3.zero, Quaternion.identity);
+            unitProduction = prefabInstance.GetComponent<UnitProduction>();
+            if (unitProduction != null)
+            {
+                unitProduction.SetProducer(producer);
+            }
         }
         else
         {
             Debug.LogError("Le composant UnitProduction est introuvable sur l'instance du prefab !");
         }
 
-        // Définir le parent de l'instance
         prefabInstance.transform.SetParent(gridLayout.transform, false);
     }
 

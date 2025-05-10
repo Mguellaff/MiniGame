@@ -8,7 +8,7 @@ public class UnitProduction : MonoBehaviour
     private InventoryManager inventoryManager;
     private bool isReadyToHarvest = false;
     private bool isRequiringResource = false;
-    private bool isProducing = false; // Nouvelle variable pour indiquer si la production est en cours
+    private bool isProducing = false;
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
     private Animator animator;
@@ -22,23 +22,12 @@ public class UnitProduction : MonoBehaviour
         resourceIcon = bubbleCanvas.transform.GetComponentInChildren<Image>();
         inventoryManager = FindObjectOfType<InventoryManager>();
     }
-
-    private void ProduceUnit()
+    private void ProcessHarvest()
     {
-        if (inventoryManager == null)
-        {
-            inventoryManager = FindObjectOfType<InventoryManager>();
-            if (inventoryManager == null)
-            {
-                Debug.LogError("Aucun InventoryManager trouvé dans la scène !");
-                return;
-            }
-        }
-
-        if (producer.BaseItem != null && inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost))
-        {
-            inventoryManager.AddResource(producer.ProducedItem, producer.ProductionAmount);
-        }
+        inventoryManager.AddResource(producer.ProducedItem, producer.ProductionAmount);
+        isReadyToHarvest = false;
+        bubbleCanvas.SetActive(false);
+        StartCoroutine(Produce());
     }
 
     public void Harvest()
@@ -53,27 +42,28 @@ public class UnitProduction : MonoBehaviour
         {
             if (producer.BaseItem == null)
             {
-                inventoryManager.AddResource(producer.ProducedItem, producer.ProductionAmount);
-                isReadyToHarvest = false;
-                bubbleCanvas.SetActive(false);
-                StartCoroutine(Produce());
+                ProcessHarvest();
             }
-            else if (producer.BaseItem != null && inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost) && isReadyToHarvest)
+            else if (inventoryManager.GetResourceAmount(producer.BaseItem) >= producer.ProductionCost)
             {
-                inventoryManager.AddResource(producer.ProducedItem, producer.ProductionAmount);
-                isReadyToHarvest = false;
-                bubbleCanvas.SetActive(false);
-                StartCoroutine(Produce());
+                inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost);
+                ProcessHarvest();
             }
         }
         else
         {
-            if (producer.BaseItem != null && inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost))
+            if (producer.BaseItem != null && inventoryManager.GetResourceAmount(producer.BaseItem) >= producer.ProductionCost)
+            {
+                inventoryManager.SpendResource(producer.BaseItem, producer.ProductionCost);
+                StartCoroutine(Produce());
+            }
+            else if (producer.BaseItem == null)
             {
                 StartCoroutine(Produce());
             }
         }
     }
+
 
     public void SetProducer(Producer producer)
     {
@@ -85,11 +75,7 @@ public class UnitProduction : MonoBehaviour
         meshFilter.mesh = producer.mesh;
         meshRenderer.material = producer.material;
         resourceIcon.sprite = producer.ProducedItem.icon;
-        if (producer.BaseItem == null)
-        {
-            Debug.Log("Le BaseItem du Producer est null !");
-            StartCoroutine(Produce());
-        }
+        Utils.VerifyIfNull(producer.BaseItem, () => StartCoroutine(Produce()),true);
     }
 
     private IEnumerator Produce()
@@ -113,18 +99,16 @@ public class UnitProduction : MonoBehaviour
 
     public bool GetIsRequiringResource()
     {
-        if (producer.BaseItem == null)
+        Utils.VerifyIfNull(producer.BaseItem, () => isRequiringResource = false, true);
+
+        if (producer.BaseItem != null)
         {
-            isRequiringResource = false;
+            int resourceAmount = inventoryManager.GetResourceAmount(producer.BaseItem);
+            isRequiringResource = resourceAmount < producer.ProductionCost ||
+                                  (resourceAmount >= producer.ProductionCost && !isReadyToHarvest);
         }
-        else if (producer.BaseItem != null && inventoryManager.GetResourceAmount(producer.BaseItem) < producer.ProductionCost)
-        {
-            isRequiringResource = true;
-        }
-        else if (producer.BaseItem != null && inventoryManager.GetResourceAmount(producer.BaseItem) >= producer.ProductionCost && isReadyToHarvest == false)
-        {
-            isRequiringResource = true;
-        }
+
         return isRequiringResource;
     }
+
 }
