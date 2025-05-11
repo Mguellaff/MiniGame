@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
     {
         InitializeResources();
     }
-
+    //Méthode qui associe tous les ResourceType aux ResourceData
     private void InitializeResources()
     {
         ResourceType[] resourceTypes = Resources.LoadAll<ResourceType>("ResourceTypes");
@@ -47,7 +47,7 @@ public class InventoryManager : MonoBehaviour
         Debug.Log($"Initialized {resourceDictionary.Count} resources.");
     }
 
-
+    //Ajoute une ressource au ResourceData
     public void AddResource(object resourceIdentifier, int amount)
     {
         ResourceType resourceType = null;
@@ -93,7 +93,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-
+    //Méthode pour dépenser une ressource
     public bool SpendResource(object resourceIdentifier, int amount)
     {
         ResourceType resourceType = null;

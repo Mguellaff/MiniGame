@@ -9,4 +9,5 @@ public class ResourceType : ScriptableObject
     public TextMeshProUGUI textToChange;
     public ResourceData resourceData;
     public int baseAmount;
+    public string suffix;
 }

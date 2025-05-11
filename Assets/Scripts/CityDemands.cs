@@ -78,6 +78,7 @@ public class CityDemands : MonoBehaviour
         }
     }
 
+    // Coroutine pour générer une nouvelle demande à intervalles réguliers
     private IEnumerator GenerateDemand()
     {
         while (isGenerating)
@@ -89,7 +90,7 @@ public class CityDemands : MonoBehaviour
         }
     }
 
-    // Méthode pour mettre à jour l'UI
+    // Méthode pour mettre à jour l'interface utilisateur avec la nouvelle demande
     private void UpdateShirtDemandUI(int newDemand)
     {
         if (shirtDemandText != null)
@@ -98,6 +99,7 @@ public class CityDemands : MonoBehaviour
         }
     }
 
+    // Méthode pour récolter les ressources et répondre à la demande
     public void Harvest()
     {
         int currentShirtAmount = inventoryManager.GetResourceAmount(baseItemName);

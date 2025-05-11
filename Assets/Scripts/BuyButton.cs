@@ -15,6 +15,7 @@ public class BuyButton : MonoBehaviour
     private InventoryManager inventoryManager;
     [SerializeField] private AudioClip spawnSound;
     private AudioSource audioSource;
+
     void Awake()
     {
         childImages = new Image[0];
@@ -36,8 +37,7 @@ public class BuyButton : MonoBehaviour
         audioSource = FindFirstObjectByType<AudioSource>();
     }
 
-
-
+    // Méthode pour instancier un prefab dans la grille
     private void InstantiatePrefabInGrid()
     {
         if (producer == null || producer.prefab == null)
@@ -53,7 +53,6 @@ public class BuyButton : MonoBehaviour
         }
 
         Debug.Log("Le nombre d'enfants est dans la limite autorisée.");
-
 
         if (inventoryManager.SpendResource("Money", producer.price))
         {
@@ -73,9 +72,7 @@ public class BuyButton : MonoBehaviour
         prefabInstance.transform.SetParent(gridLayout.transform, false);
     }
 
-
-
-
+    // Méthode pour configurer les informations du bouton (image et texte)
     private void SetButtonInfos()
     {
         if (producer == null)
@@ -119,8 +116,7 @@ public class BuyButton : MonoBehaviour
         }
     }
 
-
-
+    // Méthode pour définir un nouveau Producer et mettre à jour les informations du bouton
     public void SetProducer(Producer newProducer)
     {
         if (newProducer == null)
@@ -133,11 +129,10 @@ public class BuyButton : MonoBehaviour
         SetButtonInfos();
     }
 
+    // Méthode pour calculer le nombre maximum d'enfants autorisés dans la grille
     private int GetMaxGridChildren()
     {
-        maxGridChildren = (int)(gridLayout.Columns * gridLayout.Layers); 
+        maxGridChildren = (int)(gridLayout.Columns * gridLayout.Layers);
         return maxGridChildren;
     }
-
-
 }

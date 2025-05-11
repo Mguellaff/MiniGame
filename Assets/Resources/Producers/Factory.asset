@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 60
   prefab: {fileID: 3753649279583834754, guid: 48fa80f91d7968147b3f82b1089f8053, type: 3}
   ProductionAmount: 1
-  ProductionTime: 20
+  ProductionTime: 10
   ProductionCost: 250
   BaseItem: {fileID: 11400000, guid: 4cb684ecf5b995445b9138b2e963ce76, type: 2}
   ProducedItem: {fileID: 11400000, guid: 06508a468b5852d47a9d543f37d47827, type: 2}
